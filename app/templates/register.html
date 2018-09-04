@@ -1,0 +1,23 @@
+{% extends 'base.html '%} 
+
+{% block title %}注册{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block main %}
+<div style="width:100%;text-align:center">
+    <h3 class="page-title">注册</h3>
+    {% from "_formhelpers.html" import render_field %}
+    <form method=post>
+    <dl>
+      {{ render_field(form.username) }}
+      {{ render_field(form.telephone) }}
+      {{ render_field(form.password) }}
+      {{ render_field(form.confirm) }}
+      {{ render_field(form.accept_tos) }}
+    </dl>
+    <p><input type=submit value=注册>
+    </form>
+</div>
+
+{% endblock %} 

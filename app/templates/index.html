@@ -1,0 +1,39 @@
+{% extends 'base.html '%}
+
+{% block title %}首页{% endblock %}
+
+{% block head %}
+     <link rel="stylesheet"  href="{{ url_for('static',filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+{{ pagedown.include_pagedown() }}
+{% endblock %}
+
+{% block main %}
+    <ul class="post-list-group">
+        {% for post in posts %}
+            <li>
+                <div class="avatar-group">
+                <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
+                </div>
+                <div class="post-group">
+                    <p class="post-title"><a href="{{ url_for('detail', post_id=post.id) }}">{{ post.title }}</a></p>
+                    <p class="post-body">
+                    {% if post.body_html %}
+                        {{ post.body_html | safe }}
+                    {% else %}
+                        {{ post.body }}
+                    {% endif %}
+                    <div class="post-info">
+                        <span class="post-author">{{ post.author.username }}</span>
+                        <span class="post-time">{{ post.create_time }}</span>
+                    </div>
+                </div>
+            <li>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}详情-{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+{% endblock %}
+
+{% block main %}
+  <body>
+    <h3 class="page-title">{{ post.title }}</h3>
+    <p class="post-info">
+        <span>作者：{{ post.author.username }}</span>
+        <span>时间：{{ post.create_time }}</span>
+    </p>
+    <hr>
+    <p class="post-content">
+        {% if post.body_html %}
+            {{ post.body_html | safe }}
+        {% else %}
+            {{ post.body }}
+        {% endif %}
+    </p>
+    <hr>
+  </body>
+    <h4>评论：(0)</h4>
+{% endblock %}
