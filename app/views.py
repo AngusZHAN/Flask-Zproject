@@ -80,13 +80,16 @@ def detail(post_id):
 def edit(id):
     post = Post.query.get_or_404(id)
     if current_user != post.author:
-        abort(404)
+        flash('您不是文章作者，无法修改。')
+        return redirect(url_for('index'))
     form = PostForm()
     if request.method == 'POST' and form.validate():
+        post.title = form.title.data
         post.body = form.body.data
         db.session.add(post)
         db.session.commit()
         flash('文章修改成功')
         return redirect(url_for('post', id = post.id))
+    form.title.data = post.title
     form.body.data = post.body
     return render_template('edit_post.html', form = form)

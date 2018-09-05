@@ -23,5 +23,17 @@
     </p>
     <hr>
   </body>
+  <div class="post-footer">
+    {% if current_user == post.author %}
+    <a href="{{ url_for('.edit', id=post.id) }}">
+        <span class="label label-primary">修改文章</span>
+    </a>
+    {% elif current_user.is_administrator %}
+    <a href="{{ url_for('.edit', id=post.id) }}">
+        <span class="label label-danger">修改文章 [Admin]</span>
+    </a>
+    {% endif %}
+  </div>
+
     <h4>评论：(0)</h4>
 {% endblock %}
