@@ -1,6 +1,6 @@
 from app import app, db
-from .forms import RegisterForm, LoginForm, PostForm
-from .models import User, Post
+from .forms import RegisterForm, LoginForm, PostForm, QuestionForm, AnswerForm
+from .models import User, Post, Question, Answer
 from flask import render_template, redirect, request, url_for, flash, session
 from flask_login import login_required, login_user, logout_user, current_user
 
@@ -93,3 +93,36 @@ def edit(id):
     form.title.data = post.title
     form.body.data = post.body
     return render_template('edit_post.html', form = form)
+
+@app.route('/question/', methods = ['GET', 'POST'])
+def question():
+    form = QuestionForm(request.form)
+    if request.method == 'POST' and form.validate():
+        question = Question(title = form.title.data,
+                            body = form.body.data,
+                            author = current_user._get_current_object())
+        db.session.add(question)
+        db.session.commit()
+        flash('发布成功')
+        return redirect(url_for('index'))
+    return render_template('question.html', form = form)
+
+@app.route('/add_answer/', methods = ['GET', 'POST'])
+def add_answer():
+    form = AnswerForm()
+    answer = Answer(body = form.body.data,
+                    author = current_user._get_current_object())
+    user_id = session['user_id']
+    user = User.query.filter(User.id == user_id).first()
+    answer.author = user 
+    question = Question.query.filter(Question.id == question_id).first()
+    answer.question = question
+    db.session.add(answer)
+    db.session.commit()
+    flash('回答成功')
+    redirect(url_for('q_detail', question_id=question_id))
+
+@app.route('/q_detail/<question_id>')
+def q_detail(question_id):
+    question_model = Question.query.filter(Question.id == question_id).first()
+    return render_template('detail.html', question = question_model)
