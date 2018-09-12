@@ -21,7 +21,7 @@
                 <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
                 </div>
                 <div class="post-group">
-                    <p class="post-title"><a href="{{ url_for('detail', post_id=post.id) }}">{{ post.title }}</a></p>
+                    <p class="post-title"><a href="{{ url_for('main.detail', post_id=post.id) }}">{{ post.title }}</a></p>
                     <p class="post-body">
                     {% if post.body_html %}
                         {{ post.body_html | safe }}
@@ -43,7 +43,7 @@
                 <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
                 </div>
                 <div class="question-group">
-                    <p class="question-title"><a href="{{ url_for('q_detail', question_id=question.id) }}">{{ question.title }}</a></p>
+                    <p class="question-title"><a href="{{ url_for('main.q_detail', question_id=question.id) }}">{{ question.title }}</a></p>
                     <p class="question-content">{{ question.body }}
                     </p>
                     <div class="question-info">
