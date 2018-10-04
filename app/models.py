@@ -1,8 +1,15 @@
-from app import db, login_manager
-from flask_login import UserMixin
+from app import (
+    db, 
+    login_manager,
+    )
+from flask_login import (
+    UserMixin, 
+    current_user,
+    )
 from datetime import datetime
-from markdown import markdown 
+from markdown import markdown
 import bleach
+
 
 class Permission:
     FOLLOW = 0x01
@@ -11,39 +18,46 @@ class Permission:
     MODERATE_COMMENTS = 0x08
     ADMINISTER = 0x80
 
+
 class Role(db.Model):
     __tablename__ = 'roles'
-    id = db.Column(db.Integer, primary_key = True)
-    name = db.Column(db.String(64), unique = True)
-    default = db.Column(db.Boolean, default= False, index = True)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True)
+    default = db.Column(db.Boolean, default=False, index=True)
     permissions = db.Column(db.Integer)
-    users = db.relationship('User', backref = 'role', lazy = 'dynamic')
+    users = db.relationship('User', backref='role', lazy='dynamic')
 
     def __repr__(self):
         return '<Role %r>' % self.name
 
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key = True, autoincrement=True)
-    username = db.Column(db.String(64), unique = True, nullable = False)
-    telephone = db.Column(db.String(11), unique = True, nullable = False)
-    password = db.Column(db.String(64), nullable = False)
-    about_me = db.Column(db.String(128), )
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    username = db.Column(db.String(64), unique=True, nullable=False)
+    telephone = db.Column(db.String(11), unique=True, nullable=False)
+    password = db.Column(db.String(64), nullable=False)
+    avatar = db.Column(db.String(128), default=None)
+    name = db.Column(db.String(64))
+    location = db.Column(db.String(64))
+    about_me = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
-    posts = db.relationship('Post', backref = 'author', lazy = 'dynamic')
-    questions = db.relationship('Question', backref = 'author', lazy = 'dynamic')
-    answers = db.relationship('Answer', backref = 'author', lazy = 'dynamic')
+    posts = db.relationship('Post', backref='author', lazy='dynamic')
+    questions = db.relationship('Question', backref='author', lazy='dynamic')
+    answers = db.relationship('Answer', backref='author', lazy='dynamic')
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+
 class Post(db.Model):
     __tablename__ = 'posts'
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(64))
     body = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default = datetime.utcnow)
+    create_time = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     body_html = db.Column(db.Text)
@@ -57,24 +71,27 @@ class Post(db.Model):
             markdown(value, output_format='html'),
             tags=allowed_tags, strip=True))
 
+
 db.event.listen(Post.body, 'set', Post.on_changed_body)
+
 
 class Question(db.Model):
     __tablename__ = 'questions'
-    id = db.Column(db.Integer, primary_key = True, autoincrement=True) 
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(64))
     body = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default = datetime.utcnow)
+    create_time = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    answers = db.relationship('Answer', backref = 'replier', lazy = 'dynamic')
+    answers = db.relationship('Answer', backref='replier', lazy='dynamic')
 
     body_html = db.Column(db.Text)
 
+
 class Answer(db.Model):
     __tablename__ = 'answers'
-    id = db.Column(db.Integer, primary_key = True, autoincrement=True) 
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     body = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default = datetime.utcnow)
+    create_time = db.Column(db.DateTime, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     replier_id = db.Column(db.Integer, db.ForeignKey('questions.id'))
 

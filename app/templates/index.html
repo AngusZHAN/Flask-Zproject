@@ -3,7 +3,6 @@
 {% block title %}首页{% endblock %}
 
 {% block head %}
-     <link rel="stylesheet"  href="{{ url_for('static',filename='css/index.css') }}">
 {% endblock %}
 
 {% block content %}{% endblock %}
@@ -21,7 +20,9 @@
                 <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
                 </div>
                 <div class="post-group">
+                    <h3>
                     <p class="post-title"><a href="{{ url_for('main.detail', post_id=post.id) }}">{{ post.title }}</a></p>
+                    </h3>
                     <p class="post-body">
                     {% if post.body_html %}
                         {{ post.body_html | safe }}

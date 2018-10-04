@@ -3,13 +3,13 @@
 {% block title %}详情-{% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/detail.css') }}">
+
 {% endblock %}
 
 {% block main %}
   <body>
-    <h3 class="page-title">{{ post.title }}</h3>
-    <p class="post-info">
+    <h3 class="page-title"  style="text-align:center;">{{ post.title }}</h3>
+    <p class="post-info"  style="text-align:center;">
         <span>作者：{{ post.author.username }}</span>
         <span>时间：{{ post.create_time }}</span>
     </p>
