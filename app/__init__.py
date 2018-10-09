@@ -6,6 +6,7 @@ import config
 
 app = Flask(__name__)
 app.config.from_object(config)
+
 db = SQLAlchemy(app)
 
 login_manager = LoginManager(app)
@@ -17,9 +18,7 @@ pagedown = PageDown(app)
 from app import models
 
 from .auth import auth
-
 app.register_blueprint(auth, url_prefix='/auth')
 
 from .main import main
-
 app.register_blueprint(main)

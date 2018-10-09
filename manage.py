@@ -15,6 +15,7 @@ from app.models import (
 	Answer,
 	)
 
+
 manager = Manager(app)
 
 # 使用Migrate绑定app和db
