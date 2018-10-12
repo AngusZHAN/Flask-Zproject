@@ -37,7 +37,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), unique=True, nullable=False)
     telephone = db.Column(db.String(11), unique=True, nullable=False)
     password = db.Column(db.String(64), nullable=False)
-    avatar = db.Column(db.String(128), default=None)
+    i_avatar = db.Column(db.String(128), default=None)
     name = db.Column(db.String(64))
     location = db.Column(db.String(64))
     about_me = db.Column(db.String(128))

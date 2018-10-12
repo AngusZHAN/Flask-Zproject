@@ -4,14 +4,15 @@
 
 {% block page_content %}
 <div class="page-header">
-    {% if current_user.avatar %}
-        <img class = "img-rounded profile-thumbnail" width = "200" height = "200" src = "{{ user.avatar }}">
+    {% if current_user.i_avatar %}
+        <img class = "img-rounded profile-thumbnail" width = "200" height = "200" src = "{{ user.i_avatar }}">
     {% else %}
         <img class = "img-rounded profile-thumbnail" width = "200" height = "200" src = "/static/avatar/default.jpg">
     {% endif %}
-    <form method="post" action="{{ url_for('.up_avatar') }}" enctype="multipart/form-data">
-        <input type="file" size="30" name="avatar"/>
-        <input type="submit" value="上传头像" class="button-new" style="margin-top:15px;"/>
+    <h1>更换头像</h1>
+    <form method=post action="{{ url_for('.up_avatar') }}" enctype=multipart/form-data>
+      <p><input type=file name=file>
+         <input type=submit value="上传头像">
     </form>
     <h1>{{ user.username }}</h1>
     {% if user == current_user %}

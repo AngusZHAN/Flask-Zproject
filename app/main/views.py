@@ -1,31 +1,31 @@
 from . import main
 from .. import db
 from .forms import (
-    PostForm, 
-    QuestionForm, 
-    AnswerForm, 
+    PostForm,
+    QuestionForm,
+    AnswerForm,
     EditProfileForm,
-    )
+)
 from ..models import (
-    User, 
-    Post, 
-    Question, 
+    User,
+    Post,
+    Question,
     Answer,
-    )
+)
 from flask import (
-    render_template, 
-    redirect, 
-    request, 
-    url_for, 
-    flash, 
+    render_template,
+    redirect,
+    request,
+    url_for,
+    flash,
     session,
-    )
+)
 from flask_login import (
-    login_required, 
-    login_user, 
-    logout_user, 
+    login_required,
+    login_user,
+    logout_user,
     current_user,
-    )
+)
 
 
 @main.route('/')
@@ -64,25 +64,24 @@ def edit_profile():
     return render_template('edit_profile.html', form=form, user=user)
 
 
-import os 
-basedir = os.path.abspath(os.path.dirname(__file__))
 @main.route('/up_avatar/', methods=['GET', 'POST'])
+@login_required
 def up_avatar():
-    avatar = request.files.get('avatar')
+    avatar = request.files.get('file')
     fname = avatar.filename
-    UPLOAD_FOLDER = basedir+"/static/avatar/"
+    UPLOAD_FOLDER = "D:\\Code\\Flask-Zproject\\app\\static\\avatar\\"
     ALLOWED_EXTENSIONS = ['gif', 'png', 'jpg', 'jpeg']
     flag = '.' in fname and fname.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
     if not flag:
         flash('文件类型错误，请重试')
         return redirect(url_for('.user', username=current_user.username))
-    avatar.save('{}{}_{}', format(UPLOAD_FOLDER, current_user.username, fname))
-    current_user.avatar = '/static/avatar/{}_{}'.format(current_user.username, fname)
+    avatar.save('{}{}_{}'.format(UPLOAD_FOLDER, current_user.username, fname))
+    current_user.i_avatar = '\\static\\avatar\\{}_{}'.format(current_user.username, fname)
     db.session.add(current_user)
     db.session.commit()
     flash('上传头像成功')
-    return redirect(url_for('.user', username=current_user.username))       
-    
+    return redirect(url_for('.user', username=current_user.username))
+
 
 @main.route('/publish/', methods=['GET', 'POST'])
 @login_required

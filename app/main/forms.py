@@ -36,4 +36,3 @@ class EditProfileForm(Form):
     name = StringField('姓名', validators=[validators.Length(0, 64)])
     location = StringField('地址', validators=[validators.Length(0, 64)])
     about_me = TextAreaField('关于我')
-    avatar = FileField('上传头像')
