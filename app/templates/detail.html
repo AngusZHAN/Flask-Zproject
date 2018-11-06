@@ -3,25 +3,27 @@
 {% block title %}详情-{% endblock %}
 
 {% block head %}
-
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 {% endblock %}
 
 {% block main %}
   <body>
-    <h3 class="page-title"  style="text-align:center;">{{ post.title }}</h3>
-    <p class="post-info"  style="text-align:center;">
-        <span>作者：{{ post.author.username }}</span>
-        <span>时间：{{ post.create_time }}</span>
-    </p>
-    <hr>
-    <p class="post-content">
-        {% if post.body_html %}
-            {{ post.body_html | safe }}
-        {% else %}
-            {{ post.body }}
-        {% endif %}
-    </p>
-    <hr>
+    <div id="main">
+        <h3 class="page-title"  style="text-align:center;">{{ post.title }}</h3>
+        <p class="post-info"  style="text-align:center;">
+            <span>作者：{{ post.author.username }}</span>
+            <span>时间：{{ post.create_time }}</span>
+        </p>
+        <hr>
+        <p>
+            {% if post.body_html %}
+                {{ post.body_html | safe }}
+            {% else %}
+                {{ post.body }}
+            {% endif %}
+        </p>
+        <hr>
+    </div>
   </body>
   <div class="post-footer">
     {% if current_user == post.author %}
@@ -35,5 +37,17 @@
     {% endif %}
   </div>
 
-    <h4>评论：(0)</h4>
+  <div class="comments">
+      <h4>评论：{{ post.comments.count() }}</h4>
+
+      <h3 class="page-title">发布新评论</h3>
+      {% from "_formhelpers.html" import render_field %}
+      <form method=post  style="height:100px;">
+      <dl>
+        {{ render_field(form.body) }}
+      </dl>
+      <p><input type=submit value=确认发布>
+      </form>
+  </div>
+    
 {% endblock %}

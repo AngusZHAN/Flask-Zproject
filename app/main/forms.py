@@ -28,6 +28,10 @@ class QuestionForm(Form):
     body = PageDownField('问题描述')
 
 
+class CommentForm(Form):
+    body = StringField('写下你的评论', validators=[validators.DataRequired()])
+
+
 class AnswerForm(Form):
     body = PageDownField('回答内容', validators=[validators.DataRequired()])
 

@@ -2,6 +2,7 @@ from . import main
 from .. import db
 from .forms import (
     PostForm,
+    CommentForm,
     QuestionForm,
     AnswerForm,
     EditProfileForm,
@@ -9,6 +10,7 @@ from .forms import (
 from ..models import (
     User,
     Post,
+    Comment,
     Question,
     Answer,
 )
@@ -76,7 +78,8 @@ def up_avatar():
         flash('文件类型错误，请重试')
         return redirect(url_for('.user', username=current_user.username))
     avatar.save('{}{}_{}'.format(UPLOAD_FOLDER, current_user.username, fname))
-    current_user.i_avatar = '\\static\\avatar\\{}_{}'.format(current_user.username, fname)
+    current_user.i_avatar = '\\static\\avatar\\{}_{}'.format(
+        current_user.username, fname)
     db.session.add(current_user)
     db.session.commit()
     flash('上传头像成功')
@@ -98,16 +101,32 @@ def publish():
     return render_template('publish.html', form=form)
 
 
-@main.route('/post/<int:id>')
+@main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
-    return render_template('post.html', posts=[post])
+    form = CommentForm()
+    if request.method == 'POST' and form.validate():
+        comment = Comment(body=form.body.data,
+                          post=post,
+                          author=current_user._get_current_object())
+        db.session.add(comment)
+        flash('Your comment has been published.')
+        return redirect(url_for('.detail', id=post.id))
+    return render_template('post.html', posts=[post], form=form, comments=comments)
 
 
 @main.route('/detail/<post_id>')
 def detail(post_id):
     post_model = Post.query.filter(Post.id == post_id).first()
-    return render_template('detail.html', post=post_model)
+    form = CommentForm()
+    if request.method == 'POST' and form.validate():
+        comment = Comment(body=form.body.data,
+                          post=post,
+                          author=current_user._get_current_object())
+        db.session.add(comment)
+        flash('评论成功')
+        return redirect(url_for('.detail', id=post.id))
+    return render_template('detail.html', post=post_model, form=form)
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])

@@ -3,6 +3,7 @@
 {% block title %}首页{% endblock %}
 
 {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 {% endblock %}
 
 {% block content %}{% endblock %}
@@ -13,46 +14,51 @@
 {% endblock %}
 
 {% block main %}
-    <ul class="post-list-group">
-        {% for post in posts %}
-            <li>
-                <div class="avatar-group">
-                <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
-                </div>
-                <div class="post-group">
-                    <h3>
-                    <p class="post-title"><a href="{{ url_for('main.detail', post_id=post.id) }}">{{ post.title }}</a></p>
-                    </h3>
-                    <p class="post-body">
-                    {% if post.body_html %}
-                        {{ post.body_html | safe }}
-                    {% else %}
-                        {{ post.body }}
-                    {% endif %}
-                    <div class="post-info">
-                        <span class="post-author">{{ post.author.username }}</span>
-                        <span class="post-time">{{ post.create_time }}</span>
+<body>
+    <div id="main">
+        <ul class="post-list-group">
+            {% for post in posts %}
+                <li>
+                    <div class="avatar-group">
+                    <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
                     </div>
-                </div>
-            <li>
-        {% endfor %}
-    </ul>
-    <ul class="question-list-group">
-        {% for question in questions %}
-            <li>
-                <div class="avatar-group">
-                <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
-                </div>
-                <div class="question-group">
-                    <p class="question-title"><a href="{{ url_for('main.q_detail', question_id=question.id) }}">{{ question.title }}</a></p>
-                    <p class="question-content">{{ question.body }}
-                    </p>
-                    <div class="question-info">
-                        <span class="question-author">{{ question.author.username }}</span>
-                        <span class="question-time">{{ question.create_time }}</span>
+                    <div class="post-group">
+                        <h3>
+                        <p class="post-title"><a href="{{ url_for('main.detail', post_id=post.id) }}">{{ post.title }}</a></p>
+                        </h3>
+                        <div class="post-info">
+                            <span class="post-author">{{ post.author.username }}</span>
+                            <span class="post-time">{{ post.create_time }}</span>
+                        </div>
+                        <div class="post-body">
+                            {% if post.body_html %}
+                                {{ post.body_html | safe }}
+                            {% else %}
+                                {{ post.body }}
+                            {% endif %}
+                        </div>
                     </div>
-                </div>
-            <li>
-        {% endfor %}
-    </ul>
+                <li>
+            {% endfor %}
+        </ul>
+        <ul class="question-list-group">
+            {% for question in questions %}
+                <li>
+                    <div class="avatar-group">
+                    <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
+                    </div>
+                    <div class="question-group">
+                        <p class="question-title"><a href="{{ url_for('main.q_detail', question_id=question.id) }}">{{ question.title }}</a></p>
+                        <p class="question-content">{{ question.body }}
+                        </p>
+                        <div class="question-info">
+                            <span class="question-author">{{ question.author.username }}</span>
+                            <span class="question-time">{{ question.create_time }}</span>
+                        </div>
+                    </div>
+                <li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
 {% endblock %}

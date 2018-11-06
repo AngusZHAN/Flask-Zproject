@@ -21,6 +21,11 @@
             {{ post.body }}
         {% endif %}
         </div>
+        <a href="{{ url_for('.post', id=post.id) }}#评论">
+            <span class="label label-primary">
+                {{ post.comments.count() }} 评论
+            </span>
+        </a>
     </li>
     {% endfor %}
 </ul>

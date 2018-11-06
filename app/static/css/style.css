@@ -1,0 +1,17 @@
+#main {
+  width: 80%;
+  max-width: 1000px;
+  min-width: 960px;
+  margin: 15px auto;
+  min-height: 400px;
+  position: relative;
+}
+
+#comments {
+  width: 80%;
+  max-width: 1000px;
+  min-width: 960px;
+  margin: 15px auto;
+  min-height: 400px;
+  position: relative;
+}
