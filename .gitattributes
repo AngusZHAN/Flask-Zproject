@@ -1,1 +1,2 @@
-*.tcl linguist-language=python；
+﻿*.tcl linguist-language=python；
+*.html linguist-language=python；
