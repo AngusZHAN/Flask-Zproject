@@ -79,7 +79,7 @@ def up_avatar():
         return redirect(url_for('.user', username=current_user.username))
     avatar.save('{}{}_{}'.format(UPLOAD_FOLDER, current_user.username, fname))
     current_user.i_avatar = '\\static\\avatar\\{}_{}'.format(
-        current_user.username, fname)
+                                current_user.username, fname)
     db.session.add(current_user)
     db.session.commit()
     flash('上传头像成功')
@@ -104,18 +104,10 @@ def publish():
 @main.route('/post/<int:id>', methods=['GET', 'POST'])
 def post(id):
     post = Post.query.get_or_404(id)
-    form = CommentForm()
-    if request.method == 'POST' and form.validate():
-        comment = Comment(body=form.body.data,
-                          post=post,
-                          author=current_user._get_current_object())
-        db.session.add(comment)
-        flash('Your comment has been published.')
-        return redirect(url_for('.detail', id=post.id))
-    return render_template('post.html', posts=[post], form=form, comments=comments)
+    return render_template('post.html', posts=[post])
 
 
-@main.route('/detail/<post_id>')
+@main.route('/detail/<post_id>', methods=['GET', 'POST'])
 def detail(post_id):
     post_model = Post.query.filter(Post.id == post_id).first()
     form = CommentForm()
@@ -124,9 +116,13 @@ def detail(post_id):
                           post=post,
                           author=current_user._get_current_object())
         db.session.add(comment)
+        db.session.commit()
         flash('评论成功')
-        return redirect(url_for('.detail', id=post.id))
-    return render_template('detail.html', post=post_model, form=form)
+        return redirect(url_for('.detail', id=post.id, page=-1))
+    comments = Comment.query.filter(post_id == post_id).all()
+    return render_template('detail.html', post=post_model, form=form,
+                                          comments=comments)
+    
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])

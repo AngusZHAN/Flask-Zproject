@@ -23,31 +23,35 @@
             {% endif %}
         </p>
         <hr>
+      <div class="post-footer">
+        {% if current_user == post.author %}
+        <a href="{{ url_for('.edit', id=post.id) }}">
+            <span class="label label-primary">修改文章</span>
+        </a>
+        {% elif current_user.is_administrator %}
+        <a href="{{ url_for('.edit', id=post.id) }}">
+            <span class="label label-danger">修改文章 [Admin]</span>
+        </a>
+        {% endif %}
+      </div>
+
+      <div class="comments">
+          <h4>评论：{{ post.comments.count() }}</h4>
+          {% for comment in post.comments %}
+            <p>{{ comment.author}}</p>
+            <p>{{ comment.body }}</p> 
+            <p>{{ comment.create_time }}</p>
+          {% endfor%}
+
+          <h3 class="page-title">发布新评论</h3>
+          {% from "_formhelpers.html" import render_field %}
+          <form method=post  style="height:100px;">
+          <dl>
+            {{ render_field(form.body) }}
+          </dl>
+          <p><input type=submit value=确认发布>
+          </form>
+      </div>
     </div>
-  </body>
-  <div class="post-footer">
-    {% if current_user == post.author %}
-    <a href="{{ url_for('.edit', id=post.id) }}">
-        <span class="label label-primary">修改文章</span>
-    </a>
-    {% elif current_user.is_administrator %}
-    <a href="{{ url_for('.edit', id=post.id) }}">
-        <span class="label label-danger">修改文章 [Admin]</span>
-    </a>
-    {% endif %}
-  </div>
-
-  <div class="comments">
-      <h4>评论：{{ post.comments.count() }}</h4>
-
-      <h3 class="page-title">发布新评论</h3>
-      {% from "_formhelpers.html" import render_field %}
-      <form method=post  style="height:100px;">
-      <dl>
-        {{ render_field(form.body) }}
-      </dl>
-      <p><input type=submit value=确认发布>
-      </form>
-  </div>
-    
+  </body>    
 {% endblock %}
