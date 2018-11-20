@@ -16,11 +16,47 @@
 {% block main %}
 <body>
     <div id="main">
-        <ul class="post-list-group">
+        <div id="content">
+        <div class="panel">
+            <div class="header">
+                <a href="/topic"
+                   class="topic-tab current-tab">
+                    全部
+                </a>
+
+                <!--{% for b in bs %}
+                <a href="/topic?board_id={{ b.id }}"
+                   class="topic-tab current-tab">
+                    {{ b.title }}
+                </a>
+                {% endfor %}-->
+            </div>
+            <div class="inner post">
+                <div class="topic_list">
+                {% for post in posts %}
+                    <div class="cell">
+                        <div class="topic_title_wrapper">
+
+                            <a class="user_avatar pull-left">
+                                <img class = "avatar" width = "200" height = "200" src = "/static/avatar/default.jpg">
+                            </a>
+
+                            <a class="topic_title" href="{{ url_for('main.detail', post_id=post.id) }}">
+                                {{ post.title }}
+                            </a>
+                            <span class="post-author">{{ post.author.username }}</span>
+                            <span class="post-time">{{ post.create_time }}</span>
+                        </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!--<ul class="post-list-group">
             {% for post in posts %}
                 <li>
                     <div class="avatar-group">
-                    <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
                     </div>
                     <div class="post-group">
                         <h3>
@@ -40,7 +76,7 @@
                     </div>
                 <li>
             {% endfor %}
-        </ul>
+        </ul> -->
         <ul class="question-list-group">
             {% for question in questions %}
                 <li>
