@@ -44,9 +44,6 @@ class User(UserMixin, db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
-    questions = db.relationship('Question', backref='author', lazy='dynamic')
-    answers = db.relationship('Answer', backref='author', lazy='dynamic')
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -96,26 +93,3 @@ class Comment(db.Model):
             tags=allowed_tags, strip=True))
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
-
-
-class Question(db.Model):
-    __tablename__ = 'questions'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.String(64))
-    body = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default=datetime.utcnow)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    answers = db.relationship('Answer', backref='replier', lazy='dynamic')
-
-    body_html = db.Column(db.Text)
-
-
-class Answer(db.Model):
-    __tablename__ = 'answers'
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    body = db.Column(db.Text)
-    create_time = db.Column(db.DateTime, default=datetime.utcnow)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    replier_id = db.Column(db.Integer, db.ForeignKey('questions.id'))
-
-    body_html = db.Column(db.Text)

@@ -11,8 +11,6 @@ from app.models import (
 	User, 
 	Role, 
 	Post, 
-	Question, 
-	Answer,
 	)
 
 

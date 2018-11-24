@@ -3,16 +3,12 @@ from .. import db
 from .forms import (
     PostForm,
     CommentForm,
-    QuestionForm,
-    AnswerForm,
     EditProfileForm,
 )
 from ..models import (
     User,
     Post,
     Comment,
-    Question,
-    Answer,
 )
 from flask import (
     render_template,
@@ -143,41 +139,3 @@ def edit(id):
     form.title.data = post.title
     form.body.data = post.body
     return render_template('edit_post.html', form=form)
-
-
-@main.route('/question/', methods=['GET', 'POST'])
-@login_required
-def question():
-    form = QuestionForm(request.form)
-    if request.method == 'POST' and form.validate():
-        question = Question(title=form.title.data,
-                            body=form.body.data,
-                            author=current_user._get_current_object())
-        db.session.add(question)
-        db.session.commit()
-        flash('发布成功')
-        return redirect(url_for('.index'))
-    return render_template('question.html', form=form)
-
-
-@main.route('/add_answer/', methods=['GET', 'POST'])
-@login_required
-def add_answer():
-    form = AnswerForm()
-    answer = Answer(body=form.body.data,
-                    author=current_user._get_current_object())
-    user_id = session['user_id']
-    user = User.query.filter(User.id == user_id).first()
-    answer.author = user
-    question = Question.query.filter(Question.id == question_id).first()
-    answer.question = question
-    db.session.add(answer)
-    db.session.commit()
-    flash('回答成功')
-    redirect(url_for('.q_detail', question_id=question_id))
-
-
-@main.route('/q_detail/<question_id>')
-def q_detail(question_id):
-    question_model = Question.query.filter(Question.id == question_id).first()
-    return render_template('detail.html', question=question_model)

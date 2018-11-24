@@ -53,48 +53,6 @@
                 </div>
             </div>
         </div>
-        <!--<ul class="post-list-group">
-            {% for post in posts %}
-                <li>
-                    <div class="avatar-group">
-                    </div>
-                    <div class="post-group">
-                        <h3>
-                        <p class="post-title"><a href="{{ url_for('main.detail', post_id=post.id) }}">{{ post.title }}</a></p>
-                        </h3>
-                        <div class="post-info">
-                            <span class="post-author">{{ post.author.username }}</span>
-                            <span class="post-time">{{ post.create_time }}</span>
-                        </div>
-                        <div class="post-body">
-                            {% if post.body_html %}
-                                {{ post.body_html | safe }}
-                            {% else %}
-                                {{ post.body }}
-                            {% endif %}
-                        </div>
-                    </div>
-                <li>
-            {% endfor %}
-        </ul> -->
-        <ul class="question-list-group">
-            {% for question in questions %}
-                <li>
-                    <div class="avatar-group">
-                    <!--<img src="{{ url_for('static', filename='images/coffee.jpg') }}"> -->
-                    </div>
-                    <div class="question-group">
-                        <p class="question-title"><a href="{{ url_for('main.q_detail', question_id=question.id) }}">{{ question.title }}</a></p>
-                        <p class="question-content">{{ question.body }}
-                        </p>
-                        <div class="question-info">
-                            <span class="question-author">{{ question.author.username }}</span>
-                            <span class="question-time">{{ question.create_time }}</span>
-                        </div>
-                    </div>
-                <li>
-            {% endfor %}
-        </ul>
-    </main>
+    </div>
 </body>
 {% endblock %}
