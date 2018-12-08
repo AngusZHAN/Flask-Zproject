@@ -1,6 +1,6 @@
 {% extends 'base.html '%} 
 
-{% block title %}发布新内容{% endblock %}
+{% block title %}评论{% endblock %}
 
 {% block head %}{% endblock %}
 
@@ -9,11 +9,10 @@
 {% block main %}
 
 <div style="width:100%;text-align:center";>
-    <h3 class="page-title">发布新内容</h3>
+    <h3 class="page-title">评论</h3>
     {% from "_formhelpers.html" import render_field %}
     <form method=post  style="height:100px;">
     <dl>
-      {{ render_field(form.title) }}
       {{ render_field(form.body) }}
     </dl>
     <p><input type=submit value=确认发布>

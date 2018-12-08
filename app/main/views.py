@@ -97,28 +97,33 @@ def publish():
     return render_template('publish.html', form=form)
 
 
-@main.route('/post/<int:id>', methods=['GET', 'POST'])
+@main.route('/post/<int:id>')
 def post(id):
     post = Post.query.get_or_404(id)
     return render_template('post.html', posts=[post])
 
 
-@main.route('/detail/<post_id>', methods=['GET', 'POST'])
+@main.route('/detail/<post_id>')
 def detail(post_id):
     post_model = Post.query.filter(Post.id == post_id).first()
-    form = CommentForm()
+    comments = Comment.query.filter(post_id == post_id).all()
+    return render_template('detail.html', post=post_model, post_id=post_id, 
+                                          comments=comments)
+
+
+@main.route('/comment/<post_id>', methods=['GET', 'POST'])
+@login_required
+def comment(post_id):
+    form = CommentForm(request.form)
     if request.method == 'POST' and form.validate():
         comment = Comment(body=form.body.data,
-                          post=post,
+                          post_id=post_id,
                           author=current_user._get_current_object())
         db.session.add(comment)
         db.session.commit()
         flash('评论成功')
-        return redirect(url_for('.detail', id=post.id, page=-1))
-    comments = Comment.query.filter(post_id == post_id).all()
-    return render_template('detail.html', post=post_model, form=form,
-                                          comments=comments)
-    
+        return redirect(url_for('.detail', post_id=post_id))
+    return render_template('comment.html', form=form, post_id=post_id)
 
 
 @main.route('/edit/<int:id>', methods=['GET', 'POST'])

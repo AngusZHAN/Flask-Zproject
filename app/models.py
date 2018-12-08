@@ -45,6 +45,7 @@ class User(UserMixin, db.Model):
     posts = db.relationship('Post', backref='author', lazy='dynamic')
     comments = db.relationship('Comment', backref='author', lazy='dynamic')
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

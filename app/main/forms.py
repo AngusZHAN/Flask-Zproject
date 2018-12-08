@@ -22,7 +22,7 @@ class PostForm(Form):
 
 
 class CommentForm(Form):
-    body = StringField('写下你的评论', validators=[validators.DataRequired()])
+    body = TextAreaField('写下你的评论', validators=[validators.DataRequired()])
 
 
 class EditProfileForm(Form):

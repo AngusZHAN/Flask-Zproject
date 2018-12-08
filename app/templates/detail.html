@@ -35,23 +35,40 @@
         {% endif %}
       </div>
 
-      <div class="comments">
-          <h4>评论：{{ post.comments.count() }}</h4>
-          {% for comment in post.comments %}
-            <p>{{ comment.author}}</p>
-            <p>{{ comment.body }}</p> 
-            <p>{{ comment.create_time }}</p>
-          {% endfor%}
-
-          <h3 class="page-title">发布新评论</h3>
-          {% from "_formhelpers.html" import render_field %}
-          <form method=post  style="height:100px;">
-          <dl>
-            {{ render_field(form.body) }}
-          </dl>
-          <p><input type=submit value=确认发布>
-          </form>
+      <div>
+          <a href="{{ url_for('main.comment', post_id=post.id) }}" class="create_topic_btn">
+              <span class="span-success">添加回复</span>
+          </a>
       </div>
-    </div>
+
+      <div class="comments">
+          <h4>评论：{{ comments | count }}</h4>
+          {% for c in comments %}
+            <div class='cell reply_area reply_item'>
+                <div class='author_content'>
+                    <div class='user_info'>
+                        <a class='dark reply_author'>
+                            {{ c.author.username }}
+                        </a>
+                        <a class="reply_time">
+                            {{ loop.index }}楼 •  天前
+                        </a>
+                    </div>
+                    <div class='user_action'>
+                        <span>
+                            <i class="fa up_btnfa-thumbs-o-upinvisible" title="喜欢"></i>
+                            <span class="up-count"></span>
+                        </span>
+                    </div>
+                </div>
+                <div class='reply_content from-leiwei1991'>
+                    <div class="markdown-text">
+                        {{ c.body }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+      </div>
+  </div>
   </body>    
 {% endblock %}
