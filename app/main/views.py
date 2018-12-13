@@ -106,7 +106,7 @@ def post(id):
 @main.route('/detail/<post_id>')
 def detail(post_id):
     post_model = Post.query.filter(Post.id == post_id).first()
-    comments = Comment.query.filter(post_id == post_id).all()
+    comments = Comment.query.filter_by(post_id = post_id).all()
     return render_template('detail.html', post=post_model, post_id=post_id, 
                                           comments=comments)
 
