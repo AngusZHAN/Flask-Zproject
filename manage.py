@@ -8,10 +8,12 @@ from app import (
 	db,
 	)
 from app.models import (
-	User, 
+	Permission,
 	Role, 
+	Follow,
+	User,
 	Post, 
-	Comment,
+	Comment, 
 	)
 
 

@@ -13,6 +13,20 @@
       <p><input type=file name=file>
          <input type=submit value="上传头像">
     </form>
+    <p>
+        {% if user != current_user %}
+            {% if not current_user.is_following(user) %}
+            <a href="{{ url_for('.follow', username=user.username) }}" class="btn btn-primary">关注</a>
+            {% else %}
+            <a href="{{ url_for('.unfollow', username=user.username) }}" class="btn btn-default">取消关注</a>
+            {% endif %}
+        {% endif %}
+        <a href="{{ url_for('.followers', username=user.username) }}">关注者: <span class="badge">{{ user.followers.count() }}</span></a>
+        <a href="{{ url_for('.followed_by', username=user.username) }}">关注的人: <span class="badge">{{ user.followed.count() }}</span></a>
+        {% if current_user.is_authenticated and user != current_user and user.is_following(current_user) %}
+        | <span class="label label-default">关注了你</span>
+        {% endif %}
+    </p>
     <h1>{{ user.username }}</h1>
     {% if user == current_user %}
     <a class="btn btn-default" href="{{ url_for('.edit_profile') }}">
@@ -23,7 +37,6 @@
         <p>姓名：{{ user.name }}</p>
         <p>地址：{{ user.location }}</p>
         <p>自我介绍：{{ user.about_me }}</p>
-        <p>电话：{{ user.telephone }}</p>
     {% endif %}
 </div>
 {% endblock %}
